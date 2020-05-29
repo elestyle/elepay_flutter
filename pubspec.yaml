@@ -1,0 +1,28 @@
+name: elepay_flutter
+description: elepay SDK wrapper for Flutter
+version: 1.0.0-beta01
+author: elestyle, Inc.
+homepage: https://elepay.io
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  plugin:
+    android:
+      package: io.elepay.sdk.elepay_flutter
+      pluginClass: ElepayFlutterPlugin
+    ios:
+      pluginClass: ElepayFlutterPlugin
