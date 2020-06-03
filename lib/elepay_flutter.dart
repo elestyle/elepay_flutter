@@ -12,11 +12,6 @@ class ElepayFlutter {
   static const MethodChannel _channel =
       const MethodChannel('elepay_flutter');
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-
   /// Initialize elepay SDK.
   ///
   /// This method should be called before invoking any other elepay API.

@@ -10,9 +10,7 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.Registrar
-import jp.elestyle.androidapp.elepay.activity.linepay.LinePayActivity
-import jp.elestyle.androidapp.elepay.activity.merpay.MerpayActivity
-import jp.elestyle.androidapp.elepay.activity.paypay.PayPayActivity
+import jp.elestyle.androidapp.elepay.activity.ElepayCallbackActivity
 
 /** ElepayFlutterPlugin */
 class ElepayFlutterPlugin : FlutterPlugin, ActivityAware, PluginRegistry.NewIntentListener {
@@ -69,21 +67,11 @@ class ElepayFlutterPlugin : FlutterPlugin, ActivityAware, PluginRegistry.NewInte
         val uri = intent?.data ?: return false
         val sender = methodImpl?.currentActivity ?: return false
 
-        val newIntent = when (uri.host) {
-            "linepay" -> Intent(sender, LinePayActivity::class.java)
-            "paypay" -> Intent(sender, PayPayActivity::class.java)
-            "merpay" -> Intent(sender, MerpayActivity::class.java)
-
-            else -> null
+        val newIntent = Intent(sender, ElepayCallbackActivity::class.java).apply {
+            data = uri
         }
-
-        return if (newIntent == null) {
-            false
-        } else {
-            newIntent.data = uri
-            sender.startActivity(newIntent)
-            true
-        }
+        sender.startActivity(newIntent)
+        return true
     }
 
     private fun setupChannel(messenger: BinaryMessenger, activity: Activity?) {

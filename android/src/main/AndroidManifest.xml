@@ -3,15 +3,7 @@
 
     <application>
         <activity
-            android:name="jp.elestyle.androidapp.elepay.activity.linepay.LinePayActivity"
-            android:exported="false" />
-
-        <activity
-            android:name="jp.elestyle.androidapp.elepay.activity.paypay.PayPayActivity"
-            android:exported="false" />
-
-        <activity
-            android:name="jp.elestyle.androidapp.elepay.activity.merpay.MerpayActivity"
+            android:name="jp.elestyle.androidapp.elepay.activity.ElepayCallbackActivity"
             android:exported="false" />
 
         <activity-alias

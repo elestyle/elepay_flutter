@@ -64,11 +64,12 @@ Some payment methods require to process the payment in their native app. For tho
 
 ### Android
 
-Add the following code to the Activity(normally it's `MainActivity`) which you used to load `ElepayFlutter` in file `AndroidManifest.xml`.
+Add the following code to the Activity which you used to load `ElepayFlutter` in file `AndroidManifest.xml`.
+> Normally it's `MainActivity`
 
 ```xml
 <intent-filter>
-    <data android:scheme="" />
+    <data android:scheme="Your-elepay-app-scheme" />
     <action android:name="android.intent.action.VIEW" />
 
     <category android:name="android.intent.category.DEFAULT" />

@@ -2,45 +2,20 @@ package io.elepay.sdk.elepay_flutter
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import androidx.annotation.NonNull
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry
 import jp.elestyle.androidapp.elepay.Elepay
 import jp.elestyle.androidapp.elepay.ElepayConfiguration
 import jp.elestyle.androidapp.elepay.ElepayError
 import jp.elestyle.androidapp.elepay.ElepayResult
 import jp.elestyle.androidapp.elepay.GooglePayEnvironment
-import jp.elestyle.androidapp.elepay.activity.linepay.LinePayActivity
-import jp.elestyle.androidapp.elepay.activity.paypay.PayPayActivity
 import jp.elestyle.androidapp.elepay.utils.locale.LanguageKey
 
-internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler,
-    PluginRegistry.NewIntentListener {
+internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
 
     var currentActivity: Activity? = null
-
-    override fun onNewIntent(intent: Intent?): Boolean {
-        val uri = intent?.data ?: return false
-        val sender = currentActivity ?: return false
-
-        val newIntent = when (uri.host) {
-            "linepay" -> Intent(sender, LinePayActivity::class.java)
-            "paypay" -> Intent(sender, PayPayActivity::class.java)
-
-            else -> null
-        }
-
-        return if (newIntent == null) {
-            false
-        } else {
-            newIntent.data = uri
-            sender.startActivity(newIntent)
-            true
-        }
-    }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
