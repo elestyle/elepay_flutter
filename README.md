@@ -4,7 +4,7 @@
 
 ## Requirement
 
-This plugin requires Flutter 2.6.0 and above.
+This plugin requires Flutter 1.12.0 with Dart SDK 2.6.0 and above.
 
 ## Setup
 
