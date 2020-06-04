@@ -9,8 +9,7 @@ part 'elepay_result.dart';
 
 /// elepay SDK wrapper class
 class ElepayFlutter {
-  static const MethodChannel _channel =
-      const MethodChannel('elepay_flutter');
+  static const MethodChannel _channel = const MethodChannel('elepay_flutter');
 
   /// Initialize elepay SDK.
   ///
@@ -29,7 +28,8 @@ class ElepayFlutter {
   /// Note that this method must be called *after* elepay SDK is initialized and *before* the
   /// invoking of [ElepayFlutter.handlePayment].
   static Future<void> changeLanguage(ElepayLanguageKey languageKey) async {
-    await _channel.invokeMethod("changeLanguage", { "languageKey": languageKey.stringPresentation });
+    await _channel.invokeMethod(
+        "changeLanguage", {"languageKey": languageKey.stringPresentation});
   }
 
   /// Handle the payment data.
@@ -39,7 +39,7 @@ class ElepayFlutter {
   /// An instance of [ElepayResult] will be returned to indicate the processing result.
   /// Refere to [ElepayResult] for more details.
   static Future<ElepayResult> handlePayment(String payload) async {
-    var params = { "payload": payload };
+    var params = {"payload": payload};
     var sdkResult = await _channel.invokeMethod("handlePayment", params);
     sdkResult = Map<String, dynamic>.from(sdkResult);
 
@@ -53,7 +53,8 @@ class ElepayFlutter {
       res = ElepayResult.cancelled(paymentId);
     } else if (state == "failed") {
       Map<String, dynamic> err = Map<String, dynamic>.from(sdkResult["error"]);
-      res = ElepayResult.failed(paymentId, err["code"], err["reason"], err["message"]);
+      res = ElepayResult.failed(
+          paymentId, err["code"], err["reason"], err["message"]);
     }
 
     return res;

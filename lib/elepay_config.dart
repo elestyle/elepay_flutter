@@ -2,25 +2,31 @@ part of elepay_flutter;
 
 /// Enumerations defined for localization supported by elepay SDK.
 enum ElepayLanguageKey {
-  english, simplifiedChinise, traditionalChinese, japanese
+  english,
+  simplifiedChinise,
+  traditionalChinese,
+  japanese
 }
 
 extension ElepayLanguageKeyExt on ElepayLanguageKey {
   String get stringPresentation {
     switch (this) {
-      case ElepayLanguageKey.english: return "english";
-      case ElepayLanguageKey.simplifiedChinise: return "simplifiedChinise";
-      case ElepayLanguageKey.traditionalChinese: return "traditionalChinese";
-      case ElepayLanguageKey.japanese: return "japanese";
+      case ElepayLanguageKey.english:
+        return "english";
+      case ElepayLanguageKey.simplifiedChinise:
+        return "simplifiedChinise";
+      case ElepayLanguageKey.traditionalChinese:
+        return "traditionalChinese";
+      case ElepayLanguageKey.japanese:
+        return "japanese";
       // Impossible
-      default: return null;
+      default:
+        return null;
     }
   }
 }
 
-enum GooglePayEnvironment {
-  test, production
-}
+enum GooglePayEnvironment { test, production }
 
 /// The configuration data used to initialize elepay SDK.
 class ElepayConfiguration {
@@ -50,21 +56,20 @@ class ElepayConfiguration {
   /// Construct the configuation data.
   ///
   /// Only the `publicKey` field is required. Others are all optional.
-  ElepayConfiguration(
-    this.publicKey,
-    {
-      this.remoteHostBaseUrl = "",
+  ElepayConfiguration(this.publicKey,
+      {this.remoteHostBaseUrl = "",
       this.googlePayEnvironment,
-      this.languageKey
-    });
+      this.languageKey});
 
   Map<String, String> get asMap {
     return {
       "publicKey": publicKey,
       "apiUrl": remoteHostBaseUrl,
       "googlePayEnvironment": googlePayEnvironment == GooglePayEnvironment.test
-        ? "test" : "production",
-      "languageKey": languageKey == null ? "null" : languageKey.stringPresentation
+          ? "test"
+          : "production",
+      "languageKey":
+          languageKey == null ? "null" : languageKey.stringPresentation
     };
   }
 }

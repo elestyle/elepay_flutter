@@ -3,7 +3,9 @@ part of elepay_flutter;
 /// The result data of the elepay SDK processing.
 abstract class ElepayResult {
   factory ElepayResult.succeeded(String paymentId) = ElepayResultSucceeded;
-  factory ElepayResult.failed(String paymentId, String code, String reason, String message) = ElepayResultFailed;
+  factory ElepayResult.failed(
+          String paymentId, String code, String reason, String message) =
+      ElepayResultFailed;
   factory ElepayResult.cancelled(String paymentId) = ElepayResultCancelled;
 }
 
@@ -40,9 +42,5 @@ class ElepayResultFailed implements ElepayResult {
   final String message;
 
   const ElepayResultFailed(
-    this.paymentId,
-    this.code,
-    this.reason,
-    this.message
-  );
+      this.paymentId, this.code, this.reason, this.message);
 }
