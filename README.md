@@ -45,7 +45,7 @@ ElepayFlutter.changeLanguage(ElepayLanguageKey.japanese);
 ...
 
 // Create the charge data(a JSON object) by invoking elepay API
-// Then transform the data to String instance and pass it to the elepay SDK to processing payment.
+// Then transform the data to String instance and pass it to the elepay SDK to process the payment.
 var res = await ElepayFlutter.handlePayment(chargePayload);
 // Handle the result data.
 if (res is ElepayResultSucceeded) {
