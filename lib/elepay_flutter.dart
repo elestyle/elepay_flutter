@@ -32,17 +32,49 @@ class ElepayFlutter {
         "changeLanguage", {"languageKey": languageKey.stringPresentation});
   }
 
-  /// Handle the payment data.
+  /// Handle the charge payment data.
   ///
   /// [payload] is supposed to be the JSON object content that you created by invoking elepay's
   /// creating charge API.
   /// An instance of [ElepayResult] will be returned to indicate the processing result.
   /// Refere to [ElepayResult] for more details.
-  static Future<ElepayResult> handlePayment(String payload) async {
+  static Future<ElepayResult> handleCharge(String payload) async {
     var params = {"payload": payload};
-    var sdkResult = await _channel.invokeMethod("handlePayment", params);
+    var sdkResult = await _channel.invokeMethod("handleCharge", params);
     sdkResult = Map<String, dynamic>.from(sdkResult);
 
+    return _processSdkResult(sdkResult);
+  }
+
+  /// Handle the source data.
+  ///
+  /// [payload] is supposed to be the JSON object content that you created by invoking elepay's
+  /// creating source API.
+  /// An instance of [ElepayResult] will be returned to indicate the processing result.
+  /// Refere to [ElepayResult] for more details.
+  static Future<ElepayResult> handleSource(String payload) async {
+    var params = {"payload": payload};
+    var sdkResult = await _channel.invokeMethod("handleSource", params);
+    sdkResult = Map<String, dynamic>.from(sdkResult);
+
+    return _processSdkResult(sdkResult);
+  }
+
+  /// Handle the checkout code data.
+  ///
+  /// [payload] is supposed to be the JSON object content that you created by invoking elepay's
+  /// creating code API.
+  /// An instance of [ElepayResult] will be returned to indicate the processing result.
+  /// Refere to [ElepayResult] for more details.
+  static Future<ElepayResult> checkout(String payload) async {
+    var params = {"payload": payload};
+    var sdkResult = await _channel.invokeMethod("checkout", params);
+    sdkResult = Map<String, dynamic>.from(sdkResult);
+
+    return _processSdkResult(sdkResult);
+  }
+
+  static ElepayResult _processSdkResult(Map<String, dynamic> sdkResult) {
     String state = sdkResult["state"];
     String paymentId = sdkResult["paymentId"];
 

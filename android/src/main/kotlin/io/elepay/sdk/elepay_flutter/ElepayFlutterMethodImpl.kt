@@ -29,7 +29,11 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
                 result.success(null)
             }
 
-            "handlePayment" -> handlePayment(call, result)
+            "handleCharge" -> processCharge(call, result)
+
+            "handleSource" -> processSource(call, result)
+
+            "checkout" -> processCheckout(call, result)
 
             else -> result.notImplemented()
         }
@@ -62,7 +66,7 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
             else -> LanguageKey.System
         }
 
-    private fun handlePayment(call: MethodCall, resultHandler: Result) {
+    private fun processCharge(call: MethodCall, resultHandler: Result) {
         if (currentActivity == null) {
             throw IllegalStateException("Invoked without any available Activitys. Make sure call this method while an Activity instance is valid.")
         }
@@ -71,63 +75,87 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
         Elepay.processPayment(
             chargeDataString = payload,
             fromActivity = currentActivity!!
-        ) { result ->
-            when (result) {
-                is ElepayResult.Succeeded ->
-                    postResult(
-                        ElepayResultWrapper("succeeded", result.paymentId).asMap,
-                        resultHandler
+        ) { result -> processElepayResult(result, resultHandler) }
+    }
+
+    private fun processSource(call: MethodCall, resultHandler: Result) {
+        if (currentActivity == null) {
+            throw IllegalStateException("Invoked without any available Activitys. Make sure call this method while an Activity instance is valid.")
+        }
+        // empty payload will trigger error.
+        val payload = call.argument<String>("payload") ?: ""
+        Elepay.processSource(
+            sourceString = payload,
+            fromActivity = currentActivity!!
+        ) { result -> processElepayResult(result, resultHandler) }
+    }
+
+    private fun processCheckout(call: MethodCall, resultHandler: Result) {
+        if (currentActivity == null) {
+            throw IllegalStateException("Invoked without any available Activitys. Make sure call this method while an Activity instance is valid.")
+        }
+        // empty payload will trigger error.
+        val payload = call.argument<String>("payload") ?: ""
+        Elepay.checkout(
+            checkoutJsonString = payload,
+            fromActivity = currentActivity!!
+        ) { result -> processElepayResult(result, resultHandler) }
+    }
+
+    private fun processElepayResult(result: ElepayResult, resultHandler: Result) = when (result) {
+        is ElepayResult.Succeeded ->
+            postResult(
+                ElepayResultWrapper("succeeded", result.paymentId).asMap,
+                resultHandler
+            )
+
+        is ElepayResult.Canceled ->
+            postResult(
+                ElepayResultWrapper("cancelled", result.paymentId).asMap,
+                resultHandler
+            )
+
+        is ElepayResult.Failed -> {
+            val elepayErr = when (val error = result.error) {
+                is ElepayError.SDKNotSetup ->
+                    ElepayErrData(error.errorCode, "SDK is not setup", error.message)
+
+                is ElepayError.UnsupportedPaymentMethod ->
+                    ElepayErrData("", "Unsupported payment method", error.paymentMethod)
+
+                is ElepayError.AlreadyMakingPayment ->
+                    ElepayErrData("", "Already making payment", error.paymentId)
+
+                is ElepayError.InvalidPayload ->
+                    ElepayErrData(error.errorCode, "Invalid payload", error.message)
+
+                is ElepayError.UninitializedPaymentMethod ->
+                    ElepayErrData(
+                        error.errorCode,
+                        "Uninitialized payment method",
+                        "${error.paymentMethod} ${error.message}"
                     )
 
-                is ElepayResult.Canceled ->
-                    postResult(
-                        ElepayResultWrapper("cancelled", result.paymentId).asMap,
-                        resultHandler
+                is ElepayError.SystemError ->
+                    ElepayErrData(error.errorCode, "System Error", error.message)
+
+                is ElepayError.PaymentFailure ->
+                    ElepayErrData(error.errorCode, "Payment failure", error.message)
+
+                is ElepayError.PermissionRequired ->
+                    ElepayErrData(
+                        "",
+                        "Permissions required",
+                        error.permissions.joinToString(", ")
                     )
-
-                is ElepayResult.Failed -> {
-                    val elepayErr = when (val error = result.error) {
-                        is ElepayError.SDKNotSetup ->
-                            ElepayErrData(error.errorCode, "SDK is not setup", error.message)
-
-                        is ElepayError.UnsupportedPaymentMethod ->
-                            ElepayErrData("", "Unsupported payment method", error.paymentMethod)
-
-                        is ElepayError.AlreadyMakingPayment ->
-                            ElepayErrData("", "Already making payment", error.paymentId)
-
-                        is ElepayError.InvalidPayload ->
-                            ElepayErrData(error.errorCode, "Invalid payload", error.message)
-
-                        is ElepayError.UninitializedPaymentMethod ->
-                            ElepayErrData(
-                                error.errorCode,
-                                "Uninitialized payment method",
-                                "${error.paymentMethod} ${error.message}"
-                            )
-
-                        is ElepayError.SystemError ->
-                            ElepayErrData(error.errorCode, "System Error", error.message)
-
-                        is ElepayError.PaymentFailure ->
-                            ElepayErrData(error.errorCode, "Payment failure", error.message)
-
-                        is ElepayError.PermissionRequired ->
-                            ElepayErrData(
-                                "",
-                                "Permissions required",
-                                error.permissions.joinToString(", ")
-                            )
-                    }
-                    val resMap = ElepayResultWrapper("failed", result.paymentId).asMap
-                    resMap["error"] = elepayErr.asMap
-                    // Althought this is an error processing, still invoke the `success` callback
-                    // since we need to pass the whole data to the caller.
-                    // `resultHandler.error` actually triggeers a `PlatformExecption` which is not
-                    // properly as the elepay SDK processing's callback result.
-                    postResult(resMap, resultHandler)
-                }
             }
+            val resMap = ElepayResultWrapper("failed", result.paymentId).asMap
+            resMap["error"] = elepayErr.asMap
+            // Althought this is an error processing, still invoke the `success` callback
+            // since we need to pass the whole data to the caller.
+            // `resultHandler.error` actually triggeers a `PlatformExecption` which is not
+            // properly as the elepay SDK processing's callback result.
+            postResult(resMap, resultHandler)
         }
     }
 
