@@ -61,7 +61,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
             }
 
         case "checkout":
-            let payload = params["checkout"] as? String ?? ""
+            let payload = params["payload"] as? String ?? ""
             DispatchQueue.main.async { [weak self] in
                 self?.processCheckout(payload: payload, resultHandler: result)
             }

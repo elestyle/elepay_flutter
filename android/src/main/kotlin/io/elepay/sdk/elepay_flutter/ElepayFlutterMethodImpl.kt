@@ -39,12 +39,11 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
         }
     }
 
-    @SuppressLint("DefaultLocale")
     private fun initElepay(call: MethodCall) {
         val publicKey = call.argument<String>("publicKey") ?: ""
         val apiUrl = call.argument<String>("apiUrl") ?: ""
         val googleEnv = call.argument<String>("googlePayEnvironment")?.let {
-            if (it.toLowerCase().contains("test")) GooglePayEnvironment.TEST
+            if (it.lowercase().contains("test")) GooglePayEnvironment.TEST
             else GooglePayEnvironment.PRODUCTION
         }
         val languageKey = retrieveLanguageKey(call.argument<String>("languageKey") ?: "")
@@ -56,9 +55,8 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
         Elepay.changeLanguageKey(languageKey)
     }
 
-    @SuppressLint("DefaultLocale")
     private fun retrieveLanguageKey(languageKeyStr: String): LanguageKey =
-        when (languageKeyStr.toLowerCase()) {
+        when (languageKeyStr.lowercase()) {
             "english" -> LanguageKey.English
             "simplifiedchinise" -> LanguageKey.SimplifiedChinise
             "traditionalchinese" -> LanguageKey.TraditionalChinese
