@@ -46,7 +46,7 @@ class ElepayFlutter {
     String state = sdkResult["state"];
     String paymentId = sdkResult["paymentId"];
 
-    ElepayResult res;
+    ElepayResult? res;
     if (state == "succeeded") {
       res = ElepayResult.succeeded(paymentId);
     } else if (state == "cancelled") {
@@ -57,6 +57,6 @@ class ElepayFlutter {
           paymentId, err["code"], err["reason"], err["message"]);
     }
 
-    return res;
+    return res!;
   }
 }

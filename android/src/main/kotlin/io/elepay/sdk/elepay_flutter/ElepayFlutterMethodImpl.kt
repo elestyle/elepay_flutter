@@ -87,6 +87,9 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
 
                 is ElepayResult.Failed -> {
                     val elepayErr = when (val error = result.error) {
+                        is ElepayError.SDKNotSetup ->
+                            ElepayErrData(error.errorCode, "SDK is not setup", error.message)
+
                         is ElepayError.UnsupportedPaymentMethod ->
                             ElepayErrData("", "Unsupported payment method", error.paymentMethod)
 

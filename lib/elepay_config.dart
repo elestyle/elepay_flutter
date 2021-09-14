@@ -9,7 +9,7 @@ enum ElepayLanguageKey {
 }
 
 extension ElepayLanguageKeyExt on ElepayLanguageKey {
-  String get stringPresentation {
+  String? get stringPresentation {
     switch (this) {
       case ElepayLanguageKey.english:
         return "english";
@@ -46,12 +46,12 @@ class ElepayConfiguration {
   /// needs to switch the environment individually.
   ///
   /// If the app do use Google Pay, leave this field `null`.
-  GooglePayEnvironment googlePayEnvironment;
+  GooglePayEnvironment? googlePayEnvironment;
 
   /// The language used by the elepay sdk.
   ///
   /// If not set, elepay SDK will use the system language.
-  ElepayLanguageKey languageKey;
+  ElepayLanguageKey? languageKey;
 
   /// Construct the configuation data.
   ///
@@ -68,8 +68,7 @@ class ElepayConfiguration {
       "googlePayEnvironment": googlePayEnvironment == GooglePayEnvironment.test
           ? "test"
           : "production",
-      "languageKey":
-          languageKey == null ? "null" : languageKey.stringPresentation
+      "languageKey": languageKey?.stringPresentation ?? "null"
     };
   }
 }
