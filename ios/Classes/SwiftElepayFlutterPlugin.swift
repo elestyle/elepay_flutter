@@ -48,6 +48,10 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
             changeLanguage(params)
             result(nil)
 
+        case "changeTheme":
+            changeTheme(params)
+            result(nil)
+
         case "handleCharge":
             let payload = params["payload"] as? String ?? ""
             DispatchQueue.main.async { [weak self] in
@@ -110,6 +114,28 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         default: ret = nil
         }
         return ret
+    }
+
+    private func changeTheme(_ themeConfig: [String: Any]) {
+        performChangingTheme(themeConfig: themeConfig)
+    }
+
+    private func performChangingTheme(themeConfig: [String: Any]) {
+        let themeName = themeConfig["theme"] as? String ?? ""
+        if #available(iOS 13, *) {
+            Elepay.userInterfaceStyle = retrieveUserInterface(from: themeName)
+        } else {
+            print("theme is only supported on iOS 13 and above.")
+        }
+    }
+
+    @available(iOS 12.0, *)
+    private func retrieveUserInterface(from themeName: String) -> UIUserInterfaceStyle {
+        switch (themeName.lowercased()) {
+        case "light": return .light
+        case "dark": return .dark
+        default: return .unspecified
+        }
     }
 
     private func processCharge(payload: String, resultHandler: @escaping FlutterResult) {

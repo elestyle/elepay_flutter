@@ -10,6 +10,7 @@ import jp.elestyle.androidapp.elepay.Elepay
 import jp.elestyle.androidapp.elepay.ElepayConfiguration
 import jp.elestyle.androidapp.elepay.ElepayError
 import jp.elestyle.androidapp.elepay.ElepayResult
+import jp.elestyle.androidapp.elepay.ElepayTheme
 import jp.elestyle.androidapp.elepay.GooglePayEnvironment
 import jp.elestyle.androidapp.elepay.utils.locale.LanguageKey
 
@@ -26,6 +27,11 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
 
             "changeLanguage" -> {
                 changeLanguage(call)
+                result.success(null)
+            }
+
+            "changeTheme" -> {
+                changeTheme(call)
                 result.success(null)
             }
 
@@ -47,7 +53,8 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
             else GooglePayEnvironment.PRODUCTION
         }
         val languageKey = retrieveLanguageKey(call.argument<String>("languageKey") ?: "")
-        Elepay.setup(ElepayConfiguration(publicKey, apiUrl, googleEnv, languageKey))
+        val theme = retrieveTheme(call.argument<String>("theme") ?: "")
+        Elepay.setup(ElepayConfiguration(publicKey, apiUrl, googleEnv, languageKey, theme))
     }
 
     private fun changeLanguage(call: MethodCall) {
@@ -62,6 +69,18 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
             "traditionalchinese" -> LanguageKey.TraditionalChinese
             "japanese" -> LanguageKey.Japanese
             else -> LanguageKey.System
+        }
+
+    private fun changeTheme(call: MethodCall) {
+        val theme = retrieveTheme(call.argument<String>("theme") ?: "")
+        Elepay.changeTheme(theme)
+    }
+
+    private fun retrieveTheme(themeName: String): ElepayTheme =
+        when(themeName.lowercase()) {
+            "light" -> ElepayTheme.Light
+            "dark" -> ElepayTheme.Dark
+            else -> ElepayTheme.System
         }
 
     private fun processCharge(call: MethodCall, resultHandler: Result) {

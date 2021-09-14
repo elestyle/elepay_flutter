@@ -9,7 +9,7 @@ enum ElepayLanguageKey {
 }
 
 extension ElepayLanguageKeyExt on ElepayLanguageKey {
-  String? get stringPresentation {
+  String get stringPresentation {
     switch (this) {
       case ElepayLanguageKey.english:
         return "english";
@@ -19,9 +19,23 @@ extension ElepayLanguageKeyExt on ElepayLanguageKey {
         return "traditionalChinese";
       case ElepayLanguageKey.japanese:
         return "japanese";
-      // Impossible
-      default:
-        return null;
+    }
+  }
+}
+
+/// Enumerations defined for theme supported by elepay SDK.
+/// Note: currenlty only Android module supports theme changing.
+enum ElepayTheme { light, dark, system }
+
+extension ElepayThemeExt on ElepayTheme {
+  String get stringPresentation {
+    switch (this) {
+      case ElepayTheme.light:
+        return "light";
+      case ElepayTheme.dark:
+        return "dark";
+      case ElepayTheme.system:
+        return "system";
     }
   }
 }

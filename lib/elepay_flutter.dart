@@ -26,10 +26,21 @@ class ElepayFlutter {
   /// will fallback to English.
   ///
   /// Note that this method must be called *after* elepay SDK is initialized and *before* the
-  /// invoking of [ElepayFlutter.handlePayment].
+  /// payment processing.
   static Future<void> changeLanguage(ElepayLanguageKey languageKey) async {
     await _channel.invokeMethod(
         "changeLanguage", {"languageKey": languageKey.stringPresentation});
+  }
+
+  /// Change the theme of elepay SDK UI.
+  ///
+  /// Note:
+  /// 1. This method must be called *after* elepay SDK is initialized and *before* the
+  /// payment processing.
+  /// 2. iOS only supports this method on iOS 13 and above.
+  static Future<void> changeTheme(ElepayTheme theme) async {
+    await _channel
+        .invokeMethod("changeTheme", {"theme": theme.stringPresentation});
   }
 
   /// Handle the charge payment data.
