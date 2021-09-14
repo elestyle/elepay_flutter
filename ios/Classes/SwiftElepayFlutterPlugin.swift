@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-import ElePay
+import ElepaySDK
 
 fileprivate struct ElepayResultWrapper {
     let state: String
@@ -64,7 +64,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey : Any] = [:]
     ) -> Bool {
-        ElePay.handleOpenURL(url, options: options)
+        Elepay.handleOpenURL(url, options: options)
     }
 
     private func initElepay(configs: [String: Any]) {
@@ -72,7 +72,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
 
         let publicKey = configs["publicKey"] as? String ?? ""
         let apiUrl = configs["apiUrl"] as? String ?? ""
-        ElePay.initApp(key: publicKey, apiURLString: apiUrl)
+        Elepay.initApp(key: publicKey, apiURLString: apiUrl)
 
         performChangingLanguage(langConfig: configs)
     }
@@ -83,12 +83,12 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
 
     private func handleOpenUrlString(_ urlString: String) -> Bool {
         guard let url = URL(string: urlString) else { return false }
-        return ElePay.handleOpenURL(url)
+        return Elepay.handleOpenURL(url)
     }
 
     private func handlePayment(payload: String, resultHandler: @escaping FlutterResult) {
         let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
-        _ = ElePay.handlePayment(chargeJSON: payload, viewController: sender) { result in
+        _ = Elepay.handlePayment(chargeJSON: payload, viewController: sender) { result in
             switch result {
             case .succeeded(let paymentId):
                 let res = ElepayResultWrapper(state: "succeeded", paymentId: paymentId)
@@ -130,18 +130,18 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
     private func performChangingLanguage(langConfig: [String: Any]) {
         let langCodeStr = langConfig["languageKey"] as? String ?? ""
         if let langCode = retrieveLanguageCode(from: langCodeStr) {
-            ElePayLocalization.shared.switchLanguage(code: langCode)
+            ElepayLocalization.shared.switchLanguage(code: langCode)
         }
     }
 
-    private func retrieveLanguageCode(from langStr: String) -> ElePayLanguageCode? {
-        let ret: ElePayLanguageCode?
+    private func retrieveLanguageCode(from langStr: String) -> ElepayLanguageCode? {
+        let ret: ElepayLanguageCode?
         switch (langStr.lowercased()) {
-            case "english": ret = .en
-            case "simplifiedchinise": ret = .cn
-            case "traditionalchinese": ret = .tw
-            case "japanese": ret = .ja
-            default: ret = nil
+        case "english": ret = .english
+        case "simplifiedchinise": ret = .simplifiedChinese
+        case "traditionalchinese": ret = .traditionalChinese
+        case "japanese": ret = .japanese
+        default: ret = nil
         }
         return ret
     }
