@@ -47,12 +47,24 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         case "changeLanguage":
             changeLanguage(params)
             result(nil)
-            break
 
         case "handlePayment":
             let payload = params["payload"] as? String ?? ""
-            handlePayment(payload: payload, resultHandler: result)
-            break
+            DispatchQueue.main.async { [weak self] in
+                self?.processPayment(payload: payload, resultHandler: result)
+            }
+
+        case "handleSource":
+            let payload = params["payload"] as? String ?? ""
+            DispatchQueue.main.async { [weak self] in
+                self?.processSource(payload: payload, resultHandler: result)
+            }
+
+        case "checkout":
+            let payload = params["checkout"] as? String ?? ""
+            DispatchQueue.main.async { [weak self] in
+                self?.processCheckout(payload: payload, resultHandler: result)
+            }
 
         default:
             break
@@ -81,52 +93,6 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         performChangingLanguage(langConfig: langConfig)
     }
 
-    private func handleOpenUrlString(_ urlString: String) -> Bool {
-        guard let url = URL(string: urlString) else { return false }
-        return Elepay.handleOpenURL(url)
-    }
-
-    private func handlePayment(payload: String, resultHandler: @escaping FlutterResult) {
-        let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
-        _ = Elepay.handlePayment(chargeJSON: payload, viewController: sender) { result in
-            switch result {
-            case .succeeded(let paymentId):
-                let res = ElepayResultWrapper(state: "succeeded", paymentId: paymentId)
-                resultHandler(res.asDictionary)
-            case .cancelled(let paymentId):
-                let res = ElepayResultWrapper(state: "cancelled", paymentId: paymentId)
-                resultHandler(res.asDictionary)
-            case .failed(let paymentId, let error):
-                let err: ElepayErrorData
-                switch error {
-                case .alreadyMakingPayment(_):
-                    err = ElepayErrorData(code: "", reason: "Already making payment", message: "")
-                case .invalidPayload(let errorCode, let message):
-                    err = ElepayErrorData(code: errorCode, reason: "Invalid payload", message: message)
-                case .paymentFailure(let errorCode, let message):
-                    err = ElepayErrorData(code: errorCode, reason: "Payment failure", message: message)
-                case .paymentMethodNotInitialized(let errorCode, let message):
-                    err = ElepayErrorData(code: errorCode, reason: "Payment method not initialized", message: message)
-                case .serverError(let errorCode, let message):
-                    err = ElepayErrorData(code: errorCode, reason: "Server error", message: message)
-                case .systemError(let errorCode, let message):
-                    err = ElepayErrorData(code: errorCode, reason: "System error", message: message)
-                case .unsupportedPaymentMethod(let errorCode, let paymentMethod):
-                    err = ElepayErrorData(code: errorCode, reason: "Unsupported payment method", message: paymentMethod)
-                @unknown default:
-                    err = ElepayErrorData(code: "-1", reason: "Undefined reason", message: "Unknonw error")
-                    break
-                }
-
-                var res = ElepayResultWrapper(state: "failed", paymentId: paymentId).asDictionary
-                res["error"] = err.asDictionary
-                resultHandler(res)
-            @unknown default:
-                break
-            }
-        }
-    }
-
     private func performChangingLanguage(langConfig: [String: Any]) {
         let langCodeStr = langConfig["languageKey"] as? String ?? ""
         if let langCode = retrieveLanguageCode(from: langCodeStr) {
@@ -144,5 +110,67 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         default: ret = nil
         }
         return ret
+    }
+
+    private func processPayment(payload: String, resultHandler: @escaping FlutterResult) {
+        let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
+        _ = Elepay.handlePayment(chargeJSON: payload, viewController: sender) { [weak self] result in
+            self?.processElepayResult(result, resultHandler: resultHandler)
+        }
+    }
+
+    private func processSource(payload: String, resultHandler: @escaping FlutterResult) {
+        let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
+        _ = Elepay.handleSource(sourceJSON: payload, viewController: sender) { [weak self] result in
+            self?.processElepayResult(result, resultHandler: resultHandler)
+        }
+    }
+
+    private func processCheckout(payload: String, resultHandler: @escaping FlutterResult) {
+        let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
+        Elepay.checkout(checkoutJSONString: payload, from: sender) { [weak self] result in
+            self?.processElepayResult(result, resultHandler: resultHandler)
+        }
+    }
+
+    private func processElepayResult(
+        _ result: ElepayResult,
+        resultHandler: @escaping FlutterResult
+    ) {
+        switch result {
+        case .succeeded(let paymentId):
+            let res = ElepayResultWrapper(state: "succeeded", paymentId: paymentId)
+            resultHandler(res.asDictionary)
+        case .cancelled(let paymentId):
+            let res = ElepayResultWrapper(state: "cancelled", paymentId: paymentId)
+            resultHandler(res.asDictionary)
+        case .failed(let paymentId, let error):
+            let err: ElepayErrorData
+            switch error {
+            case .alreadyMakingPayment(_):
+                err = ElepayErrorData(code: "", reason: "Already making payment", message: "")
+            case .invalidPayload(let errorCode, let message):
+                err = ElepayErrorData(code: errorCode, reason: "Invalid payload", message: message)
+            case .paymentFailure(let errorCode, let message):
+                err = ElepayErrorData(code: errorCode, reason: "Payment failure", message: message)
+            case .paymentMethodNotInitialized(let errorCode, let message):
+                err = ElepayErrorData(code: errorCode, reason: "Payment method not initialized", message: message)
+            case .serverError(let errorCode, let message):
+                err = ElepayErrorData(code: errorCode, reason: "Server error", message: message)
+            case .systemError(let errorCode, let message):
+                err = ElepayErrorData(code: errorCode, reason: "System error", message: message)
+            case .unsupportedPaymentMethod(let errorCode, let paymentMethod):
+                err = ElepayErrorData(code: errorCode, reason: "Unsupported payment method", message: paymentMethod)
+            @unknown default:
+                err = ElepayErrorData(code: "-1", reason: "Undefined reason", message: "Unknonw error")
+                break
+            }
+
+            var res = ElepayResultWrapper(state: "failed", paymentId: paymentId).asDictionary
+            res["error"] = err.asDictionary
+            resultHandler(res)
+        @unknown default:
+            break
+        }
     }
 }
