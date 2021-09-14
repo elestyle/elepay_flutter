@@ -48,10 +48,10 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
             changeLanguage(params)
             result(nil)
 
-        case "handlePayment":
+        case "handleCharge":
             let payload = params["payload"] as? String ?? ""
             DispatchQueue.main.async { [weak self] in
-                self?.processPayment(payload: payload, resultHandler: result)
+                self?.processCharge(payload: payload, resultHandler: result)
             }
 
         case "handleSource":
@@ -112,7 +112,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         return ret
     }
 
-    private func processPayment(payload: String, resultHandler: @escaping FlutterResult) {
+    private func processCharge(payload: String, resultHandler: @escaping FlutterResult) {
         let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
         _ = Elepay.handlePayment(chargeJSON: payload, viewController: sender) { [weak self] result in
             self?.processElepayResult(result, resultHandler: resultHandler)
