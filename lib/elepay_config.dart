@@ -62,10 +62,16 @@ class ElepayConfiguration {
   /// If the app do use Google Pay, leave this field `null`.
   GooglePayEnvironment? googlePayEnvironment;
 
-  /// The language used by the elepay sdk.
+  /// The language used by the elepay SDK.
   ///
   /// If not set, elepay SDK will use the system language.
   ElepayLanguageKey? languageKey;
+
+  /// The theme used by the elepay SDK.
+  ///
+  /// If not set, elepay SDK will use system theme.
+  /// This value is only available on Android
+  ElepayTheme? theme;
 
   /// Construct the configuation data.
   ///
@@ -73,7 +79,8 @@ class ElepayConfiguration {
   ElepayConfiguration(this.publicKey,
       {this.remoteHostBaseUrl = "",
       this.googlePayEnvironment,
-      this.languageKey});
+      this.languageKey,
+      this.theme});
 
   Map<String, String> get asMap {
     return {
@@ -82,7 +89,8 @@ class ElepayConfiguration {
       "googlePayEnvironment": googlePayEnvironment == GooglePayEnvironment.test
           ? "test"
           : "production",
-      "languageKey": languageKey?.stringPresentation ?? "null"
+      "languageKey": languageKey?.stringPresentation ?? "null",
+      "theme": theme?.stringPresentation ?? "system"
     };
   }
 }

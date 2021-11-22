@@ -91,6 +91,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         Elepay.initApp(key: publicKey, apiURLString: apiUrl)
 
         performChangingLanguage(langConfig: configs)
+        performChangingTheme(themeConfig: configs)
     }
 
     private func changeLanguage(_ langConfig: [String: Any]) {
