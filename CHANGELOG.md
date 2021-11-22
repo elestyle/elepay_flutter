@@ -1,3 +1,9 @@
+## 2.1.0
+Added a `theme` field to the ElepayConfiguration class to config theme at init stage.
+Embedded native SDK
+ * iOS 3.2.0
+ * Android 2.6.0
+
 ## 2.0.0
 Uses flutter 2.5.0 now.
 Embedded native SDK:
