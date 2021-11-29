@@ -1,3 +1,6 @@
+## 2.2.0
+Updated embedded iOS SDK version to 3.2.1
+
 ## 2.1.0
 Added a `theme` field to the ElepayConfiguration class to config theme at init stage.
 Embedded native SDK
