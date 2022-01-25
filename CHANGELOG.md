@@ -1,3 +1,8 @@
+## 2.2.1
+Updated embedded sdk.
+* iOS 3.2.2
+* Android 2.6.1
+
 ## 2.2.0
 Updated embedded iOS SDK version to 3.2.1
 
