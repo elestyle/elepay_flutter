@@ -1,3 +1,7 @@
+## 2.4.2
+Updated embedded sdk.
+* iOS 3.4.1
+
 ## 2.4.1
 Updated embedded sdk.
 * Android 2.8.1
