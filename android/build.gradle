@@ -46,5 +46,5 @@ android {
 }
 
 dependencies {
-    implementation 'jp.elestyle.androidapp:elepay:2.8.1'
+    implementation 'jp.elestyle.androidapp:elepay:2.9.0'
 }
