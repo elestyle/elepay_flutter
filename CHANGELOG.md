@@ -1,3 +1,11 @@
+## 3.0.0
+Update embedded native SDK.
+* elepay iOS SDK 4.0.0, from this version, the minimum version of iOS is upgraded to 12.0, and swift 5.7 is required.
+* elepay Android SDK 3.0.0, from this version, the required minSdk is 23.
+On both platforms, the credit card input UI now supports camera scanning.
+
+For other changes, please refer to the changelog of individual SDK.
+
 ## 2.5.0
 Update embedded sdk.
 * Android 2.9.0
