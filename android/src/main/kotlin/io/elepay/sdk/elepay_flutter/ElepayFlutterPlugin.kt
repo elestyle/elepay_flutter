@@ -63,8 +63,8 @@ class ElepayFlutterPlugin : FlutterPlugin, ActivityAware, PluginRegistry.NewInte
         methodImpl?.currentActivity = null
     }
 
-    override fun onNewIntent(intent: Intent?): Boolean {
-        val uri = intent?.data ?: return false
+    override fun onNewIntent(intent: Intent): Boolean {
+        val uri = intent.data ?: return false
         val sender = methodImpl?.currentActivity ?: return false
 
         val newIntent = Intent(sender, ElepayCallbackActivity::class.java).apply {
