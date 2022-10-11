@@ -1,3 +1,6 @@
+## 3.0.1
+* Fixed a build error occured on the newer flutter sdk version.
+
 ## 3.0.0
 Update embedded native SDK.
 * elepay iOS SDK 4.0.0, from this version, the minimum version of iOS is upgraded to 12.0, and swift 5.7 is required.
