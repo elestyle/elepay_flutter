@@ -6,6 +6,8 @@
 
 This plugin requires Flutter 3.0.0 or above.
 
+> From version 3.0.0, the minSdk 23 is required for Android target building, and iOS 12/swift 5.7 is the minimum version required for iOS target building.
+
 ## Setup
 
 Add the following dependencies in your `pubspec.yaml` file:
