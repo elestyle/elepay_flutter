@@ -1,3 +1,6 @@
+## 3.0.2
+* Fixed a crash of processing Google Pay with Stripe.
+
 ## 3.0.1
 * Fixed a build error occured on the newer flutter sdk version.
 
