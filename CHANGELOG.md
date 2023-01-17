@@ -1,3 +1,6 @@
+## 3.0.3
+* Fixed a crash on Android caused by dependency library update.
+
 ## 3.0.2
 * Fixed a crash of processing Google Pay with Stripe.
 
