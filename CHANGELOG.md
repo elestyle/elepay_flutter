@@ -1,3 +1,6 @@
+## 3.0.4
+* Fixed a packaging issue of Android SDK.
+
 ## 3.0.3
 * Fixed a crash on Android caused by dependency library update.
 
