@@ -1,3 +1,6 @@
+## 3.0.5
+* Fixed a compiling issue of iOS SDK.
+
 ## 3.0.4
 * Fixed a packaging issue of Android SDK.
 
