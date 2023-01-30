@@ -1,3 +1,6 @@
+## 3.0.6
+* Fixed a typo.
+
 ## 3.0.5
 * Fixed a compiling issue of iOS SDK.
 
