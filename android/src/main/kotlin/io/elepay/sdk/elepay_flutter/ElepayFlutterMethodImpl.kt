@@ -65,7 +65,7 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
     private fun retrieveLanguageKey(languageKeyStr: String): LanguageKey =
         when (languageKeyStr.lowercase()) {
             "english" -> LanguageKey.English
-            "simplifiedchinise" -> LanguageKey.SimplifiedChinise
+            "simplifiedchinese" -> LanguageKey.SimplifiedChinese
             "traditionalchinese" -> LanguageKey.TraditionalChinese
             "japanese" -> LanguageKey.Japanese
             else -> LanguageKey.System
