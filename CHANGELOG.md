@@ -1,3 +1,6 @@
+## 3.0.7
+* Update embedded iOS sdk to 4.0.1
+
 ## 3.0.6
 * Fixed a typo.
 

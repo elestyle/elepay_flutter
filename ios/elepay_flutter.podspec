@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'elepay_flutter'
-  s.version          = '3.0.0'
+  s.version          = '3.0.7'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC
 A new flutter plugin project.
@@ -22,5 +22,5 @@ A new flutter plugin project.
   s.swift_version = '5.7'
 
   s.ios.deployment_target  = '12.0'
-  s.dependency "ElepaySDK", "4.0.0"
+  s.dependency "ElepaySDK", "4.0.1"
 end
