@@ -80,7 +80,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey : Any] = [:]
     ) -> Bool {
-        Elepay.handleOpenURL(url, options: options)
+        return Elepay.handleOpenURL(url, options: options)
     }
 
     private func initElepay(configs: [String: Any]) {
