@@ -1,3 +1,6 @@
+## 3.0.10
+* Update embedded iOS SDK to 4.0.2
+
 ## 3.0.9
 * Returns handleOpenURL result from this plugin on iOS platform.
 
