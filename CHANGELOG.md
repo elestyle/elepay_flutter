@@ -1,3 +1,6 @@
+## 3.0.8
+* Specify launch mode of callback activity.
+
 ## 3.0.7
 * Update embedded iOS sdk to 4.0.1
 

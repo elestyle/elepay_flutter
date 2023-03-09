@@ -4,6 +4,7 @@
     <application>
         <activity
             android:name="jp.elestyle.androidapp.elepay.activity.ElepayCallbackActivity"
+            android:launchMode="singleTask"
             android:exported="false" />
 
         <activity-alias
