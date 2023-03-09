@@ -1,3 +1,6 @@
+## 3.0.9
+* Returns handleOpenURL result from this plugin on iOS platform.
+
 ## 3.0.8
 * Specify launch mode of callback activity.
 
