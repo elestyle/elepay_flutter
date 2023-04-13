@@ -1,3 +1,6 @@
+## 3.0.11
+* Update embedded Android SDK to 3.1.0
+
 ## 3.0.10
 * Update embedded iOS SDK to 4.0.2
 

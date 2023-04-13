@@ -5,7 +5,7 @@
         <activity
             android:name="jp.elestyle.androidapp.elepay.activity.ElepayCallbackActivity"
             android:launchMode="singleTask"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity-alias
             android:name="${applicationId}.wxapi.WXPayEntryActivity"
