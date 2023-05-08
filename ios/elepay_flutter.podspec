@@ -22,5 +22,5 @@ A new flutter plugin project.
   s.swift_version = '5.7'
 
   s.ios.deployment_target  = '12.0'
-  s.dependency "ElepaySDK", "4.0.2"
+  s.dependency "ElepaySDK", "4.1.0"
 end
