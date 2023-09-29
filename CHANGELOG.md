@@ -1,3 +1,8 @@
+## 3.2.1
+Update embeded SDK.
+* Android 3.3.2
+  - Add the ability to cancel checkout in EasyCheckout
+
 ## 3.2.0
 Update embeded SDK.
 * Android 3.3.1
