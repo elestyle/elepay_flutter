@@ -1,3 +1,10 @@
+## 3.3.0
+Update embeded SDK.
+* Android 3.3.3
+  - Add Rakuten Bank pre-authorization support.
+* iOS 4.2.0
+  - Add Rakuten Bank pre-authorization support.
+
 ## 3.2.1
 Update embeded SDK.
 * Android 3.3.2

@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'elepay_flutter'
-  s.version          = '3.0.7'
+  s.version          = '3.1.0'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC
 A new flutter plugin project.
@@ -19,8 +19,8 @@ A new flutter plugin project.
 
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  s.swift_version = '5.7'
+  s.swift_version = '5.9'
 
   s.ios.deployment_target  = '12.0'
-  s.dependency "ElepaySDK", "4.1.0"
+  s.dependency "ElepaySDK", "4.2.0"
 end
