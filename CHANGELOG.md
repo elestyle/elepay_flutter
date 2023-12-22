@@ -1,3 +1,12 @@
+## 3.4.0
+Update embeded SDK.
+* Android 3.4.0
+  - Add support for more payment methods without the need to update the SDK in the future.
+  - Integrate support for Naver Pay and Toss Pay.
+* iOS 4.3.0
+  - Add support for more payment methods without the need to update the SDK in the future.
+  - Integrate support for Naver Pay and Toss Pay.
+
 ## 3.3.0
 Update embeded SDK.
 * Android 3.3.3

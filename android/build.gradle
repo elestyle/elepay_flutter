@@ -31,7 +31,7 @@ rootProject.allprojects {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -46,5 +46,5 @@ android {
 }
 
 dependencies {
-    implementation 'jp.elestyle.androidapp:elepay:3.3.3'
+    implementation 'jp.elestyle.androidapp:elepay:3.4.0'
 }
