@@ -6,7 +6,7 @@
 
 build/
 
-example/
+# example/
 .idea/
 .vscode/
 elepay_flutter.iml
