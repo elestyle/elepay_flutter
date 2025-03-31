@@ -1,3 +1,7 @@
+## 3.4.2
+Update embeded SDK.
+* iOS 4.4.0
+
 ## 3.4.1
 Update embeded SDK.
 * iOS 4.3.1

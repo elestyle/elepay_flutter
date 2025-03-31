@@ -1,6 +1,6 @@
 name: elepay_flutter
 description: elepay SDK wrapper for Flutter
-version: 3.4.1
+version: 3.4.2
 homepage: https://elepay.io
 
 environment:
