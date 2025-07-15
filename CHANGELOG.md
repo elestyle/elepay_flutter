@@ -1,3 +1,9 @@
+## 3.4.3
+Update embedded SDK.
+* Android 3.4.3
+  - Removed deprecated `registerWith` method that used `PluginRegistry.Registrar`.  
+    This resolves compatibility issues with Flutter v2 Android embedding, Kotlin 1.8+, and Android API level 35.
+
 ## 3.4.2
 Update embeded SDK.
 * iOS 4.4.0
