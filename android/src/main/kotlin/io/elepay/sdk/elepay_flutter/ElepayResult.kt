@@ -2,7 +2,7 @@ package io.elepay.sdk.elepay_flutter
 
 internal data class ElepayErrData(val code: String, val reason: String, val message: String) {
     val asMap: HashMap<String, String>
-        get() = hashMapOf<String, String>(
+        get() = hashMapOf(
             "code" to code,
             "reason" to reason,
             "message" to message
