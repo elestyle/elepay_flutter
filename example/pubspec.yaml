@@ -31,7 +31,7 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.2.3
   http: ^1.2.1
-  fluttertoast: ^8.2.6
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   integration_test:

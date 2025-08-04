@@ -1,8 +1,6 @@
 package io.elepay.sdk.elepay_flutter
 
-import android.app.Activity
 import android.content.Intent
-import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -16,11 +14,11 @@ class ElepayFlutterPlugin : FlutterPlugin, ActivityAware, PluginRegistry.NewInte
     private var channel: MethodChannel? = null
     private var methodImpl: ElepayFlutterMethodImpl? = null
 
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        setupChannel(flutterPluginBinding.binaryMessenger, null)
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        setupChannel(flutterPluginBinding.binaryMessenger)
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         cleanUpChannel()
     }
 
@@ -54,11 +52,9 @@ class ElepayFlutterPlugin : FlutterPlugin, ActivityAware, PluginRegistry.NewInte
         return true
     }
 
-    private fun setupChannel(messenger: BinaryMessenger, activity: Activity?) {
+    private fun setupChannel(messenger: BinaryMessenger) {
         channel = MethodChannel(messenger, "elepay_flutter")
-        methodImpl = ElepayFlutterMethodImpl().apply {
-            this.currentActivity = activity
-        }
+        methodImpl = ElepayFlutterMethodImpl()
         channel!!.setMethodCallHandler(methodImpl)
     }
 

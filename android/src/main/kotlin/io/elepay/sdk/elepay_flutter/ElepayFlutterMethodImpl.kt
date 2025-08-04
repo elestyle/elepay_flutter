@@ -1,8 +1,6 @@
 package io.elepay.sdk.elepay_flutter
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.annotation.NonNull
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.Result
@@ -18,7 +16,7 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
 
     var currentActivity: Activity? = null
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+    override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "initElepay" -> {
                 initElepay(call)
