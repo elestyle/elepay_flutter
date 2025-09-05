@@ -1,3 +1,11 @@
+## 3.5.1
+Update embedded SDK.
+* Android 3.5.0
+  - Fixed Android 16kb adaptive issue.
+
+## 3.5.0
+* fix namespace and upgrade gradle config
+
 ## 3.4.3
 Update embedded SDK.
 * Android 3.4.3
