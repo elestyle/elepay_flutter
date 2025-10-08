@@ -59,8 +59,13 @@ class ElepayConfiguration {
   /// And it may take serveral steps to finish the review. During the review process, app(apk)
   /// needs to switch the environment individually.
   ///
-  /// If the app do use Google Pay, leave this field `null`.
+  /// If the app does NOT use Google Pay, leave this field `null`.
   GooglePayEnvironment? googlePayEnvironment;
+
+  /// Whether to require existing payment method for Google Pay.
+  ///
+  /// Default is `true`.
+  bool? googlePayExistingPaymentRequired;
 
   /// The language used by the elepay SDK.
   ///
@@ -79,6 +84,7 @@ class ElepayConfiguration {
   ElepayConfiguration(this.publicKey,
       {this.remoteHostBaseUrl = "",
       this.googlePayEnvironment,
+      this.googlePayExistingPaymentRequired, 
       this.languageKey,
       this.theme});
 
@@ -89,6 +95,7 @@ class ElepayConfiguration {
       "googlePayEnvironment": googlePayEnvironment == GooglePayEnvironment.test
           ? "test"
           : "production",
+      "googlePayExistingPaymentRequired": (googlePayExistingPaymentRequired ?? true) ? "true" : "false",
       "languageKey": languageKey?.stringPresentation ?? "null",
       "theme": theme?.stringPresentation ?? "system"
     };

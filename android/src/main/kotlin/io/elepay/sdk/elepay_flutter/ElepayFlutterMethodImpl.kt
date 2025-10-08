@@ -50,9 +50,12 @@ internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
             if (it.lowercase().contains("test")) GooglePayEnvironment.TEST
             else GooglePayEnvironment.PRODUCTION
         }
+        val googleExistingPay = call.argument<String>("googlePayExistingPaymentRequired")?.let {
+            it.toBoolean()
+        } ?: true
         val languageKey = retrieveLanguageKey(call.argument<String>("languageKey") ?: "")
         val theme = retrieveTheme(call.argument<String>("theme") ?: "")
-        Elepay.setup(ElepayConfiguration(publicKey, apiUrl, googleEnv, languageKey, theme))
+        Elepay.setup(ElepayConfiguration(publicKey, apiUrl, googleEnv, googleExistingPay,languageKey, theme))
     }
 
     private fun changeLanguage(call: MethodCall) {

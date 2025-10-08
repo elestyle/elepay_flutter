@@ -1,3 +1,7 @@
+## 3.5.2
+Update embedded SDK.
+* Android 3.6.0
+
 ## 3.5.1
 Update embedded SDK.
 * Android 3.5.0

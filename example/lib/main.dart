@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:elepay_flutter/elepay_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:elepay_flutter_example/Help/KVMap.dart';
 import 'package:elepay_flutter_example/Models/Payments.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +17,40 @@ import 'Models/TradingType.dart';
 import 'ProductsView.dart';
 import 'SettingView.dart';
 
+class _DebugHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    final client = super.createHttpClient(context);
+
+    // 通过 --dart-define 指定代理，强制走代理 e.g. flutter run --dart-define=PROXY=10.0.1.26:6152
+    const proxySpec = String.fromEnvironment('PROXY');
+
+    if (proxySpec.isNotEmpty) {
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      client.findProxy = (uri) => 'PROXY $proxySpec';
+      print('[MITM] Using proxy: $proxySpec');
+    }
+
+    return client;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Debug 启用 Network Proxy & MITM
+  if (kDebugMode) {
+    HttpOverrides.global = _DebugHttpOverrides();
+  }
+
   await KVMap.init();
 
-  var config = ElepayConfiguration(KVMap.get(KV_KEY_pubKey) ?? "");
+  var config = ElepayConfiguration(
+    KVMap.get(KV_KEY_pubKey) ?? "",
+    remoteHostBaseUrl: ConfigsProvider.host,
+    googlePayEnvironment: GooglePayEnvironment.test,
+    googlePayExistingPaymentRequired: false,
+  );
   ElepayFlutter.initElepay(config);
 
   PayHandler.setup();
