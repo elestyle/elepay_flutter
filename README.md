@@ -42,6 +42,10 @@ Since `ElepaySDK 5.0.0`, the iOS SDK is split into multiple SPM products. This p
 
 `ElepaySDK` and `ElepayCheckoutPlugin` are already linked by this plugin and do not need to be added manually.
 
+### Android
+
+Starting from `4.0.0`, the elepay Android SDK is restructured into multiple modules under the new `io.elepay.android` group id. This plugin depends on `io.elepay.android:elepay` and `io.elepay.android:elepay-checkout`. No host-app changes are required; Gradle resolves the artifacts from the `https://elestyle.github.io/elepay-android/repository` Maven repository that this plugin already declares.
+
 ## Usage
 
 * Import `package:elepay_flutter/elepay_flutter.dart`.
