@@ -5,7 +5,7 @@ import 'package:elepay_flutter_example/Models/Information.dart';
 import 'package:elepay_flutter_example/Models/TradingType.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:elepay_flutter_example/Help/Toast.dart';
 import 'package:provider/provider.dart';
 
 import 'InfosView.dart';
@@ -326,7 +326,7 @@ class InfosOverView extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               if (configsProvider.secKey.isEmpty || configsProvider.pubKey.isEmpty) {
-                Fluttertoast.showToast(msg: "Go to setting to set keys.", gravity: ToastGravity.CENTER);
+                showToast("Go to setting to set keys.");
                 return;
               }
 

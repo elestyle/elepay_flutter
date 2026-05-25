@@ -3,7 +3,7 @@ import 'package:elepay_flutter_example/Api/SourceHandler.dart';
 import 'package:elepay_flutter_example/Models/Information.dart';
 import 'package:elepay_flutter_example/Models/Payments.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:elepay_flutter_example/Help/Toast.dart';
 import 'package:provider/provider.dart';
 
 class InfosView extends StatefulWidget {
@@ -95,15 +95,15 @@ class _InfosViewState extends State<InfosView> {
                 ElevatedButton(
                   onPressed: () {
                     if (infosProvider.noInfos) {
-                      Fluttertoast.showToast(msg: "Infos cannot be empty.", gravity: ToastGravity.CENTER);
+                      showToast("Infos cannot be empty.");
                       return;
                     }
                     syncCustomer((String? customerId) {
                       if (customerId != null && customerId.isNotEmpty) {
                         infosProvider.customerId = customerId ?? "";
-                        Fluttertoast.showToast(msg: "Sync Success.", gravity: ToastGravity.CENTER);
+                        showToast("Sync Success.");
                       } else {
-                        Fluttertoast.showToast(msg: "Sync Failed.", gravity: ToastGravity.CENTER);
+                        showToast("Sync Failed.");
                       }
                     });
                   },
@@ -145,7 +145,7 @@ class _InfosViewState extends State<InfosView> {
                               sources = ret;
                             });
                             if (ret.isEmpty) {
-                              Fluttertoast.showToast(msg: "No source, please add one.", gravity: ToastGravity.CENTER);
+                              showToast("No source, please add one.");
                             }
                           },
                         );

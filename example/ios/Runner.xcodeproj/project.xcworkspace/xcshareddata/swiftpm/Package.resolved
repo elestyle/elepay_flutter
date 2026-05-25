@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "elepay-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/elestyle/elepay-ios-sdk",
+      "state" : {
+        "revision" : "85d71d275327b84436e1c3cc267fca8efbdf92d7",
+        "version" : "5.0.5"
+      }
+    }
+  ],
+  "version" : 2
+}
