@@ -1,72 +1,72 @@
 # elepay_flutter Example
 
-elepay Flutter SDK 的示例应用，演示如何集成 elepay 支付功能，包括 Charge、Checkout 和 Source 三种交易模式。
+Sample app for the elepay Flutter SDK, demonstrating how to integrate elepay payments across the three transaction modes: Charge, Checkout, and Source.
 
-## 项目结构
+## Project Structure
 
 ```
 example/
 ├── lib/
-│   ├── main.dart              # 应用入口，初始化 ElepayFlutter SDK
-│   ├── ProductsView.dart      # 商品列表页面
-│   ├── ProductCell.dart       # 商品卡片组件
-│   ├── PaymentView.dart       # 支付页面（选择商品后发起支付）
-│   ├── SettingView.dart       # 设置页面入口
-│   ├── SubViews.dart          # Keys / 交易参数 / 卡片信息 / Infos 等子视图
-│   ├── InfosView.dart         # 客户信息管理（Customer & Source）
+│   ├── main.dart              # App entry point; initializes ElepayFlutter SDK
+│   ├── ProductsView.dart      # Product list page
+│   ├── ProductCell.dart       # Product card widget
+│   ├── PaymentView.dart       # Payment page (starts payment after a product is selected)
+│   ├── SettingView.dart       # Settings page entry point
+│   ├── SubViews.dart          # Sub-views: Keys / transaction params / card info / Infos
+│   ├── InfosView.dart         # Customer info management (Customer & Source)
 │   ├── Api/
-│   │   ├── Network.dart       # HTTP 网络请求封装
-│   │   ├── PayHandler.dart    # 支付处理单例，统一管理网络层
-│   │   ├── ChargeHandler.dart # Charge 交易处理
-│   │   ├── CheckoutHandler.dart # Checkout 交易处理
-│   │   └── SourceHandler.dart # Source / Customer CRUD 操作
+│   │   ├── Network.dart       # HTTP request wrapper
+│   │   ├── PayHandler.dart    # Payment handler singleton; centralizes the network layer
+│   │   ├── ChargeHandler.dart # Charge transaction handler
+│   │   ├── CheckoutHandler.dart # Checkout transaction handler
+│   │   └── SourceHandler.dart # Source / Customer CRUD operations
 │   ├── Models/
-│   │   ├── Configs.dart       # API 配置（host、endpoints、Keys）
-│   │   ├── Products.dart      # 商品数据模型
-│   │   ├── Finance.dart       # 币种模型
-│   │   ├── Payments.dart      # 支付方式枚举
-│   │   ├── TradingType.dart   # 交易类型（Charge / Source / Checkout）
-│   │   ├── Card.dart          # 卡片信息模型
-│   │   └── Information.dart   # 客户信息模型
+│   │   ├── Configs.dart       # API configuration (host, endpoints, Keys)
+│   │   ├── Products.dart      # Product data model
+│   │   ├── Finance.dart       # Currency model
+│   │   ├── Payments.dart      # Payment method enum
+│   │   ├── TradingType.dart   # Transaction type (Charge / Source / Checkout)
+│   │   ├── Card.dart          # Card info model
+│   │   └── Information.dart   # Customer info model
 │   └── Help/
-│       ├── KVMap.dart         # SharedPreferences 封装
-│       └── Help.dart          # 工具类
-├── test/                      # 单元测试
-├── integration_test/          # 集成测试
-├── android/                   # Android 平台配置
-└── ios/                       # iOS 平台配置
+│       ├── KVMap.dart         # SharedPreferences wrapper
+│       └── Help.dart          # Utility helpers
+├── test/                      # Unit tests
+├── integration_test/          # Integration tests
+├── android/                   # Android platform configuration
+└── ios/                       # iOS platform configuration
 ```
 
-## 前置条件
+## Prerequisites
 
-- Flutter SDK >= 3.24.0（iOS 端要求启用 Swift Package Manager）
-- 在 [elepay Dashboard](https://dashboard.elepay.io) 获取 **Public Key** (`pk_live_xxx`) 和 **Secret Key** (`sk_live_xxx`)
-- iOS 开发需启用 SPM：`flutter config --enable-swift-package-manager`（ElepaySDK 5.x 仅通过 SPM 分发，不再使用 CocoaPods）
-- Android 开发需要 JDK 17+
+- Flutter SDK >= 3.24.0 (iOS requires Swift Package Manager enabled)
+- A **Public Key** (`pk_live_xxx`) and **Secret Key** (`sk_live_xxx`) from the [elepay Dashboard](https://dashboard.elepay.io)
+- iOS development requires SPM: `flutter config --enable-swift-package-manager` (ElepaySDK 5.x is distributed only via SPM; CocoaPods is no longer supported)
+- Android development requires JDK 17+
 
-## 快速开始
+## Getting Started
 
-### 1. 安装依赖
+### 1. Install dependencies
 
 ```bash
 cd example
 flutter pub get
 ```
 
-> iOS 原生依赖（ElepaySDK 5.x 等）通过 Swift Package Manager 由 Xcode 自动解析，无需 `pod install`。
-> 首次构建时 Xcode 会从 GitHub 拉取 SPM 依赖，请保持网络畅通。
+> iOS native dependencies (ElepaySDK 5.x, etc.) are resolved automatically by Xcode through Swift Package Manager — no `pod install` required.
+> On the first build, Xcode pulls SPM dependencies from GitHub, so make sure the network is reachable.
 
-### 2. 运行应用
+### 2. Run the app
 
 ```bash
-# 查看可用设备列表
+# List available devices
 flutter devices
 
-# 运行到指定设备（使用 flutter devices 输出的设备 ID）
+# Run on a specific device (use the device ID from `flutter devices`)
 flutter run -d <device_id>
 ```
 
-`flutter devices` 输出示例：
+Example `flutter devices` output:
 
 ```
 iPhone 16 Pro (mobile)  • 9A1B2C3D-...  • ios        • com.apple.CoreSimulator.SimRuntime.iOS-18-0 (simulator)
@@ -75,70 +75,70 @@ macOS (desktop)         • macos          • darwin-arm64
 Chrome (web)            • chrome         • web-javascript
 ```
 
-选择对应的设备 ID 运行即可，例如：
+Pick the matching device ID, for example:
 
 ```bash
 flutter run -d 9A1B2C3D-...
 flutter run -d emulator-5554
 ```
 
-### 4. 配置 API Keys
+### 4. Configure API Keys
 
-应用启动后，进入 **Settings** 页面，填写从 elepay Dashboard 获取的：
-- **Public Key** — 用于 SDK 初始化
-- **Secret Key** — 用于 API 请求鉴权
+After launching the app, open the **Settings** page and fill in the values obtained from the elepay Dashboard:
+- **Public Key** — used to initialize the SDK
+- **Secret Key** — used to authenticate API requests
 
-填写后点击 **Reboot to apply** 重启应用使配置生效。
+Tap **Reboot to apply** to restart the app so the new configuration takes effect.
 
-### 5. 发起支付
+### 5. Make a payment
 
-1. 在 **Products** 页面选择商品
-2. 点击右上角购物车图标进入支付页面
-3. 在支付页面可选择：
-   - **Currency** — 币种（目前仅支持 JPY）
-   - **Trading Type** — 交易类型（Charge / Source / Checkout）
-   - **Payment Method** — 支付方式
-4. 点击 **-> Go to Pay** 发起支付
+1. Pick a product on the **Products** page
+2. Tap the cart icon in the top-right to open the payment page
+3. On the payment page you can choose:
+   - **Currency** — currency (only JPY is supported for now)
+   - **Trading Type** — transaction type (Charge / Source / Checkout)
+   - **Payment Method** — payment method
+4. Tap **-> Go to Pay** to start the payment
 
-## 常用开发命令
+## Common Development Commands
 
 ```bash
-# 安装依赖
+# Install dependencies
 flutter pub get
 
-# 代码静态分析
+# Static analysis
 flutter analyze
 
-# 运行单元测试
+# Run unit tests
 flutter test
 
-# 运行集成测试
+# Run integration tests
 flutter test integration_test
 
-# 构建 APK
+# Build APK
 flutter build apk
 
-# 构建 iOS
+# Build iOS
 flutter build ios
 
-# 清理构建缓存
+# Clean build cache
 flutter clean && flutter pub get
 ```
 
-## 使用网络代理调试
+## Debugging with an HTTP Proxy
 
-在 Debug 模式下，可通过 `--dart-define` 指定 HTTP 代理来抓包：
+In Debug mode, you can route HTTP traffic through a proxy via `--dart-define` for packet capture:
 
 ```bash
 flutter run --dart-define=PROXY=10.0.1.26:6152
 ```
 
-这会将所有 HTTP 请求转发到指定代理地址，方便使用 Charles / Proxyman 等工具进行网络调试。
+All HTTP requests will be forwarded to the specified proxy address, making it easy to inspect traffic with tools like Charles or Proxyman.
 
-## 交易类型说明
+## Transaction Types
 
-| 类型 | 说明 |
-|------|------|
-| **Charge** | 直接发起支付，调用 `/charges` API 创建支付对象后通过 `ElepayFlutter.handleCharge()` 唤起支付 |
-| **Source** | 先注册 Customer 和 Source，再通过已保存的支付来源发起支付，需在 Settings > Infos 中配置客户信息 |
-| **Checkout** | 使用 Checkout 模式，调用 `/codes` API 创建结算后通过 `ElepayFlutter.checkout()` 唤起支付页面 |
+| Type | Description |
+|------|-------------|
+| **Charge** | Starts a payment directly: calls the `/charges` API to create a payment object, then invokes `ElepayFlutter.handleCharge()` to launch the payment flow |
+| **Source** | Registers a Customer and Source first, then pays through a saved payment source; customer info must be configured under Settings > Infos |
+| **Checkout** | Uses Checkout mode: calls the `/codes` API to create a checkout, then opens the payment page via `ElepayFlutter.checkout()` |

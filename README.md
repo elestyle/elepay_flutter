@@ -4,9 +4,11 @@
 
 ## Requirement
 
-This plugin requires Flutter `3.24.0` or above (SPM support is mandatory on iOS).
+This plugin requires Flutter `3.24.0` or above.
 
-> From version 4.0.0, iOS 13/Swift 5.10 is the minimum version required for iOS target building, and minSdk 23 is required for Android target building.
+> From version 4.0.0, iOS 13/Swift 5.10 is the minimum version required for iOS target building.
+>
+> From version 3.0.0, the minSdk 23 is required for Android target building, and iOS 12/swift 5.7 is the minimum version required for iOS target building.
 
 ## Setup
 
@@ -16,35 +18,6 @@ Add the following dependencies in your `pubspec.yaml` file:
 dependencies:
   elepay_flutter: ^${latestVersion}
 ```
-
-### iOS (Swift Package Manager required)
-
-Starting from `4.0.0`, the iOS side is integrated via Swift Package Manager. ElepaySDK is no longer published to CocoaPods trunk for `5.x`, so the hosting Flutter app MUST enable SPM:
-
-```bash
-flutter config --enable-swift-package-manager
-```
-
-After enabling SPM, run `flutter pub get` and `flutter run` as usual; `ElepaySDK 5.0.5` will be resolved automatically from [`elestyle/elepay-ios-sdk`](https://github.com/elestyle/elepay-ios-sdk).
-
-> If you are still on an older Flutter that cannot enable SPM, please stay on `elepay_flutter 3.5.x` which embeds ElepaySDK `4.4.0` via CocoaPods.
-
-#### Add payment-method plugins on demand
-
-Since `ElepaySDK 5.0.0`, the iOS SDK is split into multiple SPM products. This plugin only depends on `ElepaySDK` and `ElepayCheckoutPlugin` by default; other payment methods are opt-in. If your app uses any of the following methods, add the corresponding product to the host iOS project (Xcode → `Runner` target → *Frameworks, Libraries, and Embedded Content* → `+` → pick from the resolved `elepay-ios-sdk` package):
-
-| Payment method | SPM product to add |
-|---|---|
-| Stripe credit card / 3DS | `ElepayStripePlugin` |
-| Apple Pay (via Stripe) | `ElepayStripeApplePayPlugin` |
-| Alipay / WeChat Pay / UnionPay | `ElepayChinesePaymentsPlugin` |
-| Rakuten Pay | `ElepayRPayPlugin` |
-
-`ElepaySDK` and `ElepayCheckoutPlugin` are already linked by this plugin and do not need to be added manually.
-
-### Android
-
-Starting from `4.0.0`, the elepay Android SDK is restructured into multiple modules under the new `io.elepay.android` group id. This plugin depends on `io.elepay.android:elepay` and `io.elepay.android:elepay-checkout`. No host-app changes are required; Gradle resolves the artifacts from the `https://elestyle.github.io/elepay-android/repository` Maven repository that this plugin already declares.
 
 ## Usage
 
@@ -117,6 +90,14 @@ Add the following code to the Activity which you used to load `ElepayFlutter` in
 ```
 
 ### iOS
+
+Starting from `4.0.0`, the hosting Flutter app MUST enable Swift Package Manager:
+
+```bash
+flutter config --enable-swift-package-manager
+```
+
+> If you are still on an older Flutter that cannot enable SPM, please stay on `elepay_flutter 3.5.x` which embeds ElepaySDK `4.4.0` via CocoaPods.
 
 URL schemes should be configured. Please refer to the [elepay iOS SDK document](https://developer.elepay.io/docs/ios-sdk#1-url-scheme-%E3%81%AE%E8%BF%BD%E5%8A%A0) for details.
 
