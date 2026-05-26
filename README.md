@@ -4,8 +4,10 @@
 
 ## Requirement
 
-This plugin requires Flutter 3.0.0 or above.
+This plugin requires Flutter `3.24.0` or above.
 
+> From version 4.0.0, iOS 13/Swift 5.10 is the minimum version required for iOS target building.
+>
 > From version 3.0.0, the minSdk 23 is required for Android target building, and iOS 12/swift 5.7 is the minimum version required for iOS target building.
 
 ## Setup
@@ -88,6 +90,14 @@ Add the following code to the Activity which you used to load `ElepayFlutter` in
 ```
 
 ### iOS
+
+Starting from `4.0.0`, the hosting Flutter app MUST enable Swift Package Manager:
+
+```bash
+flutter config --enable-swift-package-manager
+```
+
+> If you are still on an older Flutter that cannot enable SPM, please stay on `elepay_flutter 3.5.x` which embeds ElepaySDK `4.4.0` via CocoaPods.
 
 URL schemes should be configured. Please refer to the [elepay iOS SDK document](https://developer.elepay.io/docs/ios-sdk#1-url-scheme-%E3%81%AE%E8%BF%BD%E5%8A%A0) for details.
 

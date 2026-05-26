@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:elepay_flutter/elepay_flutter.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:elepay_flutter_example/Help/Toast.dart';
 
 import '../Help/Help.dart';
 import '../Models/Configs.dart';
@@ -12,7 +12,7 @@ extension PayHandlerCharge on PayHandler {
   Future<void> handleCharge(int amount, String finance, String payment,
       {bool source = false, String customerId = "", String sourceId = ""}) async {
     if (source && (customerId.isEmpty || sourceId.isEmpty)) {
-      Fluttertoast.showToast(msg: "Go to setting to prepare Infos.", gravity: ToastGravity.CENTER);
+      showToast("Go to setting to prepare Infos.");
       return;
     }
 
@@ -37,15 +37,15 @@ extension PayHandlerCharge on PayHandler {
 
       print("test - result: $res");
       if (res is ElepayResultSucceeded) {
-        Fluttertoast.showToast(msg: "Charge Succeed<${res.paymentId}>.", gravity: ToastGravity.CENTER);
+        showToast("Charge Succeed<${res.paymentId}>.");
       } else if (res is ElepayResultFailed) {
         var toast = "${res.paymentId},code=${res.code},reason=${res.reason},message=${res.message}";
-        Fluttertoast.showToast(msg: "Checkout Failed<$toast>.", gravity: ToastGravity.CENTER);
+        showToast("Checkout Failed<$toast>.");
       } else if (res is ElepayResultCancelled) {
-        Fluttertoast.showToast(msg: "Charge Canceled<${res.paymentId}>.", gravity: ToastGravity.CENTER);
+        showToast("Charge Canceled<${res.paymentId}>.");
       }
     }).catchError((error) {
-      Fluttertoast.showToast(msg: "Charge error<${error.toString()}>.", gravity: ToastGravity.CENTER);
+      showToast("Charge error<${error.toString()}>.");
     });
   }
 }

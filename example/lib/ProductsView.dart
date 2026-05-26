@@ -1,6 +1,6 @@
 import 'package:elepay_flutter_example/Models/Configs.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:elepay_flutter_example/Help/Toast.dart';
 import 'package:provider/provider.dart';
 
 import 'Models/Products.dart';
@@ -23,11 +23,11 @@ class ProductsView extends StatelessWidget {
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
               if (configsProvider.pubKey.isEmpty || configsProvider.secKey.isEmpty) {
-                Fluttertoast.showToast(msg: "Go to setting to set keys.", gravity: ToastGravity.CENTER);
+                showToast("Go to setting to set keys.");
                 return;
               }
               if (productsProvider.count <= 0) {
-                Fluttertoast.showToast(msg: "Select the product first.", gravity: ToastGravity.CENTER);
+                showToast("Select the product first.");
                 return;
               }
               Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentView()));

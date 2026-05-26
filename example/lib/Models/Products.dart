@@ -12,14 +12,14 @@ class Product {
 
 class ProductsProvider with ChangeNotifier {
   List<Product> products = [
-    Product(emoji: "🧿", name: "ModaVest", price: 5),
-    Product(emoji: "🧢", name: "LuxStyle", price: 10),
-    Product(emoji: "🧤", name: "CapThread", price: 1),
-    Product(emoji: "🩱", name: "VivaWear", price: 0.01),
-    Product(emoji: "🩲", name: "SilkRoad", price: 6),
-    Product(emoji: "🪡", name: "EchoFit", price: 3),
-    Product(emoji: "🪢", name: "GlamCap", price: 20),
-    Product(emoji: "🩴", name: "UrbTrend", price: 25),
+    Product(emoji: "🧿", name: "ModaVest", price: 0.01),
+    Product(emoji: "🧢", name: "LuxStyle", price: 0.05),
+    Product(emoji: "🧤", name: "CapThread", price: 0.1),
+    Product(emoji: "🩱", name: "VivaWear", price: 0.2),
+    Product(emoji: "🩲", name: "SilkRoad", price: 0.3),
+    Product(emoji: "🪡", name: "EchoFit", price: 0.4),
+    Product(emoji: "🪢", name: "GlamCap", price: 0.5),
+    Product(emoji: "🩴", name: "UrbTrend", price: 1),
     Product(emoji: "🧺", name: "NovaGear", price: 80),
     Product(emoji: "🎽", name: "ZenWard", price: 30),
     Product(emoji: "🧥", name: "CoolStride", price: 20),

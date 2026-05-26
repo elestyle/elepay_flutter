@@ -1,3 +1,14 @@
+## 4.0.0
+**Breaking changes**
+
+* iOS integration is migrated from CocoaPods to Swift Package Manager. Hosting apps MUST enable SPM with `flutter config --enable-swift-package-manager`.
+* Minimum supported Flutter SDK is raised to `3.24.0` (the first stable that supports SPM for plugins).
+* Minimum supported iOS deployment target is raised to `13.0` (aligned with ElepaySDK 5.0.0).
+* Android: elepay Android SDK is restructured into multiple modules under the new `io.elepay.android` group id. The plugin now depends on `io.elepay.android:elepay:4.0.0` and `io.elepay.android:elepay-checkout:4.0.0` instead of the legacy `jp.elestyle.androidapp:elepay`. No changes are required in your Flutter app code.
+* Embedded native SDK:
+  - iOS: ElepaySDK 5.0.5 (Stripe SDK 24.x, drop iOS 12 support).
+  - Android: elepay Android SDK 4.0.0 (architecture upgrade, GMO Payment support).
+
 ## 3.5.2
 Update embedded SDK.
 * Android 3.6.0

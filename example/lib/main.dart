@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:elepay_flutter/elepay_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:elepay_flutter_example/Help/KVMap.dart';
+import 'package:elepay_flutter_example/Help/Toast.dart';
 import 'package:elepay_flutter_example/Models/Payments.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,9 +75,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      scaffoldMessengerKey: appScaffoldMessengerKey,
+      home: const HomeScreen(),
     );
   }
 }

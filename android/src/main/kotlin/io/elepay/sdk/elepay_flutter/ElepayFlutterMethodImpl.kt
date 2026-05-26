@@ -8,9 +8,9 @@ import jp.elestyle.androidapp.elepay.Elepay
 import jp.elestyle.androidapp.elepay.ElepayConfiguration
 import jp.elestyle.androidapp.elepay.ElepayError
 import jp.elestyle.androidapp.elepay.ElepayResult
-import jp.elestyle.androidapp.elepay.ElepayTheme
 import jp.elestyle.androidapp.elepay.GooglePayEnvironment
-import jp.elestyle.androidapp.elepay.utils.locale.LanguageKey
+import jp.elestyle.androidapp.elepay.core.locale.LanguageKey
+import jp.elestyle.androidapp.elepay.core.theme.ElepayTheme
 
 internal class ElepayFlutterMethodImpl : MethodChannel.MethodCallHandler {
 

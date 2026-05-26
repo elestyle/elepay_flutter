@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:elepay_flutter/elepay_flutter.dart';
 import 'package:elepay_flutter_example/Models/Configs.dart';
 import 'package:elepay_flutter_example/Models/Payments.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:elepay_flutter_example/Help/Toast.dart';
 
 import 'Network.dart';
 import 'PayHandler.dart';
@@ -58,7 +58,7 @@ extension PayHandlerSource on PayHandler {
       completion(ret);
     }).catchError((error) {
       completion([]);
-      Fluttertoast.showToast(msg: "Source error<${error.toString()}>.", gravity: ToastGravity.CENTER);
+      showToast("Source error<${error.toString()}>.");
     });
   }
 
@@ -69,24 +69,24 @@ extension PayHandlerSource on PayHandler {
       String sourceId = result['id'] as String;
 
       if (sourceId.isEmpty) {
-        Fluttertoast.showToast(msg: "Source error.", gravity: ToastGravity.CENTER);
+        showToast("Source error.");
         completion(null);
         return;
       }
 
       var res = await ElepayFlutter.handleSource(jsonEncode(result));
       if (res is ElepayResultSucceeded) {
-        Fluttertoast.showToast(msg: "Source Succeed<${res.paymentId}>.", gravity: ToastGravity.CENTER);
+        showToast("Source Succeed<${res.paymentId}>.");
       } else if (res is ElepayResultFailed) {
         var toast = "${res.paymentId},code=${res.code},reason=${res.reason},message=${res.message}";
-        Fluttertoast.showToast(msg: "Checkout Failed<$toast>.", gravity: ToastGravity.CENTER);
+        showToast("Checkout Failed<$toast>.");
       } else if (res is ElepayResultCancelled) {
-        Fluttertoast.showToast(msg: "Source Canceled<${res.paymentId}>.", gravity: ToastGravity.CENTER);
+        showToast("Source Canceled<${res.paymentId}>.");
       }
       completion(sourceId ?? "");
     }).catchError((error) {
       completion(null);
-      Fluttertoast.showToast(msg: "Source error<${error.toString()}>.", gravity: ToastGravity.CENTER);
+      showToast("Source error<${error.toString()}>.");
     });
   }
 }

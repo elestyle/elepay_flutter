@@ -2,11 +2,11 @@ import Flutter
 import UIKit
 import ElepaySDK
 
-fileprivate struct ElepayResultWrapper {
+private struct ElepayResultWrapper {
     let state: String
     let paymentId: String?
 
-    var asDictionary: Dictionary<String, Any> {
+    var asDictionary: [String: Any] {
         return [
             "state": state,
             "paymentId": paymentId ?? "null"
@@ -14,12 +14,12 @@ fileprivate struct ElepayResultWrapper {
     }
 }
 
-fileprivate struct ElepayErrorData {
+private struct ElepayErrorData {
     let code: String
     let reason: String
     let message: String
 
-    var asDictionary: Dictionary<String, String> {
+    var asDictionary: [String: String] {
         return [
             "code": code,
             "reason": reason,
@@ -28,10 +28,11 @@ fileprivate struct ElepayErrorData {
     }
 }
 
-public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
+@objc(ElepayFlutterPlugin)
+public class ElepayFlutterPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "elepay_flutter", binaryMessenger: registrar.messenger())
-        let instance = SwiftElepayFlutterPlugin()
+        let instance = ElepayFlutterPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         registrar.addApplicationDelegate(instance)
     }
@@ -71,14 +72,14 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
             }
 
         default:
-            break
+            result(FlutterMethodNotImplemented)
         }
     }
 
     public func application(
         _ application: UIApplication,
         open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
         return Elepay.handleOpenURL(url, options: options)
     }
@@ -106,15 +107,13 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     private func retrieveLanguageCode(from langStr: String) -> ElepayLanguageCode? {
-        let ret: ElepayLanguageCode?
-        switch (langStr.lowercased()) {
-        case "english": ret = .english
-        case "simplifiedchinise": ret = .simplifiedChinese
-        case "traditionalchinese": ret = .traditionalChinese
-        case "japanese": ret = .japanese
-        default: ret = nil
+        switch langStr.lowercased() {
+        case "english": return .english
+        case "simplifiedchinise": return .simplifiedChinese
+        case "traditionalchinese": return .traditionalChinese
+        case "japanese": return .japanese
+        default: return nil
         }
-        return ret
     }
 
     private func changeTheme(_ themeConfig: [String: Any]) {
@@ -123,38 +122,42 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
 
     private func performChangingTheme(themeConfig: [String: Any]) {
         let themeName = themeConfig["theme"] as? String ?? ""
-        if #available(iOS 13, *) {
-            Elepay.userInterfaceStyle = retrieveUserInterface(from: themeName)
-        } else {
-            print("theme is only supported on iOS 13 and above.")
-        }
+        Elepay.userInterfaceStyle = retrieveUserInterface(from: themeName)
     }
 
-    @available(iOS 12.0, *)
     private func retrieveUserInterface(from themeName: String) -> UIUserInterfaceStyle {
-        switch (themeName.lowercased()) {
+        switch themeName.lowercased() {
         case "light": return .light
         case "dark": return .dark
         default: return .unspecified
         }
     }
 
+    private func keyViewController() -> UIViewController {
+        let scenes = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+        let keyWindow = scenes
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+        return keyWindow?.rootViewController ?? UIViewController()
+    }
+
     private func processCharge(payload: String, resultHandler: @escaping FlutterResult) {
-        let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
+        let sender = keyViewController()
         _ = Elepay.handlePayment(chargeJSON: payload, viewController: sender) { [weak self] result in
             self?.processElepayResult(result, resultHandler: resultHandler)
         }
     }
 
     private func processSource(payload: String, resultHandler: @escaping FlutterResult) {
-        let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
+        let sender = keyViewController()
         _ = Elepay.handleSource(sourceJSON: payload, viewController: sender) { [weak self] result in
             self?.processElepayResult(result, resultHandler: resultHandler)
         }
     }
 
     private func processCheckout(payload: String, resultHandler: @escaping FlutterResult) {
-        let sender = UIApplication.shared.keyWindow?.rootViewController ?? UIViewController()
+        let sender = keyViewController()
         Elepay.checkout(checkoutJSONString: payload, from: sender) { [weak self] result in
             self?.processElepayResult(result, resultHandler: resultHandler)
         }
@@ -174,7 +177,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
         case .failed(let paymentId, let error):
             let err: ElepayErrorData
             switch error {
-            case .alreadyMakingPayment(_):
+            case .alreadyMakingPayment:
                 err = ElepayErrorData(code: "", reason: "Already making payment", message: "")
             case .invalidPayload(let errorCode, let message):
                 err = ElepayErrorData(code: errorCode, reason: "Invalid payload", message: message)
@@ -189,8 +192,7 @@ public class SwiftElepayFlutterPlugin: NSObject, FlutterPlugin {
             case .unsupportedPaymentMethod(let errorCode, let paymentMethod):
                 err = ElepayErrorData(code: errorCode, reason: "Unsupported payment method", message: paymentMethod)
             @unknown default:
-                err = ElepayErrorData(code: "-1", reason: "Undefined reason", message: "Unknonw error")
-                break
+                err = ElepayErrorData(code: "-1", reason: "Undefined reason", message: "Unknown error")
             }
 
             var res = ElepayResultWrapper(state: "failed", paymentId: paymentId).asDictionary
