@@ -1,3 +1,8 @@
+## 4.0.1
+
+Update embedded SDK.
+* Android 4.0.1
+
 ## 4.0.0
 **Breaking changes**
 

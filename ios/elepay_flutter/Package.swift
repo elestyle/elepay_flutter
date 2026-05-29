@@ -12,7 +12,7 @@ let package = Package(
         .library(name: "elepay-flutter", targets: ["elepay_flutter"])
     ],
     dependencies: [
-        .package(url: "https://github.com/elestyle/elepay-ios-sdk", from: "5.0.5")
+        .package(url: "https://github.com/elestyle/elepay-ios-sdk", exact: "5.0.5")
     ],
     targets: [
         .target(
