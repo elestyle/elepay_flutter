@@ -57,6 +57,6 @@ android {
 }
 
 dependencies {
-    implementation 'io.elepay.android:elepay:4.0.0'
-    implementation 'io.elepay.android:elepay-checkout:4.0.0'
+    implementation 'io.elepay.android:elepay:4.0.1'
+    implementation 'io.elepay.android:elepay-checkout:4.0.1'
 }
