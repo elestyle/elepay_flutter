@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- diag harness PROOF_D: required for foreground notification on Android 13+ (Pixel 3a / API 31 implicitly granted) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:label="elepay example"
         tools:replace="android:label"
@@ -29,8 +31,14 @@
             </intent-filter>
         </activity>
 
+        <!--
+            diag harness DEV-9290:
+            intent-filter has been moved from the SDK's ElepayCallbackActivity to a local subclass
+            (OverriddenCallbackActivity) so we can instrument the deep-link landing without touching the SDK aar.
+            The subclass still receives the SDK callback via inheritance.
+        -->
         <activity
-            android:name="jp.elestyle.androidapp.elepay.activity.ElepayCallbackActivity"
+            android:name="com.example.elepay_flutter_example.OverriddenCallbackActivity"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"
             android:exported="true">

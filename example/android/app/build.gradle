@@ -61,3 +61,15 @@ android {
 flutter {
     source = "../.."
 }
+
+// diag harness DEV-9290: example app subclasses ElepayCallbackActivity in OverriddenCallbackActivity.kt.
+// The plugin pulls elepay aar as `implementation`, which is not visible to consumers, so we re-declare it here
+// to make the SDK classes visible to the example's compile classpath. Keeps the SDK aar identical (4.0.1).
+repositories {
+    maven { url "https://elestyle.github.io/elepay-android/repository" }
+}
+
+dependencies {
+    compileOnly 'io.elepay.android:elepay:4.0.1'
+    compileOnly 'androidx.appcompat:appcompat:1.7.0'
+}
